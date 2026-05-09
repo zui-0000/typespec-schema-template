@@ -1,0 +1,12 @@
+services:
+  swagger-ui:
+    image: swaggerapi/swagger-ui:v5.32.0
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dist:/usr/share/nginx/html/dist
+    environment:
+      URLS: "[{url: '/dist/hoge-backend-openapi.yaml', name: 'Hoge Backend'},{url: '/dist/foo-backend-openapi.yaml', name: 'Foo Backend'}]"
+      URLS_PRIMARY_NAME: "Hoge Backend"
+      # -1 を指定するとスキーマ（components）セクションを非表示にする
+      DEFAULT_MODELS_EXPAND_DEPTH: -1

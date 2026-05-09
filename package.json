@@ -7,6 +7,7 @@
     "check:updates": "pnpm outdated --recursive --long",
     "check:lefthook": "pnpm format-all",
     "build": "pnpm run format-all && run-s \"build:*\"",
+    "preview": "echo 'Swagger UI: http://localhost:8080' && docker compose up",
     "build:foo-backend": "tsp compile src/foo-backend",
     "build:hoge-backend": "tsp compile src/hoge-backend",
     "format-all": "run-s \"format:*\"",
