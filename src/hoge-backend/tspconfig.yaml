@@ -2,5 +2,5 @@ emit:
   - "@typespec/openapi3"
 options:
   "@typespec/openapi3":
-    emitter-output-dir: "{cwd}/dist/hoge-backend"
-    output-file: "openapi.yaml"
+    emitter-output-dir: "{cwd}/dist"
+    output-file: "hoge-backend-openapi.yaml"

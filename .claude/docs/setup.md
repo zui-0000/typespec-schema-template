@@ -19,4 +19,4 @@ pnpm install
 | `pnpm format-all` | スキーマ + package.json をフォーマット |
 | `pnpm check:updates` | 依存パッケージの更新確認 |
 
-ビルド成果物は `dist/{service-name}/openapi.yaml` に出力される。
+ビルド成果物は `dist/{service-name}-openapi.yaml` に出力される。

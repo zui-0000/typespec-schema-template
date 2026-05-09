@@ -226,6 +226,6 @@ data.result.id
 ## サービスの追加方法
 
 1. `src/{service-name}/` フォルダを作成
-2. `tspconfig.yaml` を作成（`emitter-output-dir: "{cwd}/dist/{service-name}"`）
+2. `tspconfig.yaml` を作成（`emitter-output-dir: "{cwd}/dist"`, `output-file: "{service-name}-openapi.yaml"`）
 3. `main.tsp` を作成してルーティングを定義
 4. `package.json` の `build` スクリプトに `&& tsp compile src/{service-name}` を追加
