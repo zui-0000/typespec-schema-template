@@ -1,0 +1,303 @@
+openapi: 3.0.0
+info:
+  title: Foo Backend API
+  version: 0.0.0
+tags:
+  - name: Products
+paths:
+  /products:
+    get:
+      operationId: listProducts
+      description: 全商品を取得する
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+          explode: false
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: integer
+          explode: false
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductListResponse'
+        '500':
+          description: サーバーエラー
+      tags:
+        - Products
+    post:
+      operationId: createProduct
+      description: 商品を新規作成する
+      parameters: []
+      responses:
+        '201':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCreateResponse'
+        '400':
+          description: リクエスト内容が不正
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+        '500':
+          description: サーバーエラー
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreateRequest'
+  /products/{id}:
+    get:
+      operationId: getProduct
+      description: IDを指定して商品を取得する
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ProductId'
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductGetResponse'
+        '404':
+          description: リソースが見つからない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundException'
+        '500':
+          description: サーバーエラー
+      tags:
+        - Products
+components:
+  schemas:
+    BadRequestException:
+      type: object
+      required:
+        - errorCode
+        - message
+        - meta
+      properties:
+        errorCode:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          $ref: '#/components/schemas/ErrorMessage'
+        meta:
+          $ref: '#/components/schemas/CommonResponseMeta'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+      description: リクエスト内容が不正
+      title: BadRequestException
+      example:
+        errorCode: '4000'
+        message: BadRequestException
+        meta:
+          respondedAt: '2025-01-01T12:00:00Z'
+        details:
+          - field: email
+            message: メールアドレスの形式が不正です
+    CommonResponseMeta:
+      type: object
+      required:
+        - respondedAt
+      properties:
+        respondedAt:
+          $ref: '#/components/schemas/RespondedAt'
+      title: CommonResponseMeta
+    CurrentPage:
+      type: integer
+      minimum: 1
+      description: 現在のページ番号
+      title: CurrentPage
+    ErrorCode:
+      type: string
+      description: エラーコード
+      title: ErrorCode
+      example: '4000'
+    ErrorDetail:
+      type: object
+      required:
+        - field
+        - message
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+      description: バリデーションエラーの詳細
+      title: ErrorDetail
+    ErrorMessage:
+      type: string
+      description: エラーメッセージ
+      title: ErrorMessage
+      example: BadRequestException
+    PerPage:
+      type: integer
+      minimum: 1
+      description: 1ページあたりの件数
+      title: PerPage
+    ProductCreateRequest:
+      type: object
+      required:
+        - name
+        - price
+      properties:
+        name:
+          $ref: '#/components/schemas/ProductName'
+        price:
+          $ref: '#/components/schemas/ProductPrice'
+      title: ProductCreateRequest
+    ProductCreateResponse:
+      type: object
+      required:
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/CommonResponseMeta'
+      title: ProductCreateResponse
+    ProductGetResponse:
+      type: object
+      required:
+        - result
+        - meta
+      properties:
+        result:
+          $ref: '#/components/schemas/ProductGetResult'
+        meta:
+          $ref: '#/components/schemas/CommonResponseMeta'
+      title: ProductGetResponse
+    ProductGetResult:
+      type: object
+      required:
+        - id
+        - name
+        - price
+      properties:
+        id:
+          $ref: '#/components/schemas/ProductId'
+        name:
+          $ref: '#/components/schemas/ProductName'
+        price:
+          $ref: '#/components/schemas/ProductPrice'
+      title: ProductGetResult
+    ProductId:
+      type: string
+      pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$
+      description: 商品ID (UUID v7)
+      title: ProductId
+      example: 018eef15-1234-7123-8123-123456789abc
+    ProductListPagination:
+      type: object
+      required:
+        - totalCount
+        - totalPages
+        - currentPage
+        - perPage
+      properties:
+        totalCount:
+          $ref: '#/components/schemas/TotalCount'
+        totalPages:
+          $ref: '#/components/schemas/TotalPages'
+        currentPage:
+          $ref: '#/components/schemas/CurrentPage'
+        perPage:
+          $ref: '#/components/schemas/PerPage'
+      title: ProductListPagination
+    ProductListResponse:
+      type: object
+      required:
+        - result
+        - meta
+        - pagination
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductListResult'
+        meta:
+          $ref: '#/components/schemas/CommonResponseMeta'
+        pagination:
+          $ref: '#/components/schemas/ProductListPagination'
+      title: ProductListResponse
+    ProductListResult:
+      type: object
+      required:
+        - id
+        - name
+        - price
+      properties:
+        id:
+          $ref: '#/components/schemas/ProductId'
+        name:
+          $ref: '#/components/schemas/ProductName'
+        price:
+          $ref: '#/components/schemas/ProductPrice'
+      title: ProductListResult
+    ProductName:
+      type: string
+      minLength: 1
+      maxLength: 100
+      description: 商品名
+      title: ProductName
+      example: TypeSpec入門書
+    ProductPrice:
+      type: integer
+      minimum: 0
+      description: 商品価格（円）
+      title: ProductPrice
+      example: 1980
+    ResourceNotFoundException:
+      type: object
+      required:
+        - errorCode
+        - message
+        - meta
+      properties:
+        errorCode:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          $ref: '#/components/schemas/ErrorMessage'
+        meta:
+          $ref: '#/components/schemas/CommonResponseMeta'
+      description: リソースが存在しない
+      title: ResourceNotFoundException
+      example:
+        errorCode: '4040'
+        message: ResourceNotFoundException
+        meta:
+          respondedAt: '2025-01-01T12:00:00Z'
+    RespondedAt:
+      type: string
+      description: 'レスポンス日時 (ISO 8601形式: YYYY-MM-DDTHH:mm:ss.sssZ, PostgreSQL TIMESTAMPTZ互換)'
+      title: RespondedAt
+      example: '2025-01-01T12:00:00Z'
+    TotalCount:
+      type: integer
+      minimum: 0
+      description: 総件数
+      title: TotalCount
+    TotalPages:
+      type: integer
+      minimum: 0
+      description: 総ページ数
+      title: TotalPages
