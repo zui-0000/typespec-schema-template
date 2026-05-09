@@ -17,8 +17,8 @@ namespace HogeBackendApi {
     @get
     @operationId("listUsers")
     op list(
-      @query page: integer,
-      @query limit: integer,
+      @query currentPage: CurrentPage,
+      @query perPage: PerPage,
     ): SuccessOkResponse<UserListResponse> | InternalServerErrorResponse;
 
     /** IDを指定してユーザーを取得する */

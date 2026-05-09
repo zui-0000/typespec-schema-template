@@ -17,8 +17,8 @@ namespace FooBackendApi {
     @get
     @operationId("listProducts")
     op list(
-      @query page: integer,
-      @query limit: integer,
+      @query currentPage: CurrentPage,
+      @query perPage: PerPage,
     ): SuccessOkResponse<ProductListResponse> | InternalServerErrorResponse;
 
     /** IDを指定して商品を取得する */

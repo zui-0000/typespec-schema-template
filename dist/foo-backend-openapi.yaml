@@ -10,17 +10,17 @@ paths:
       operationId: listProducts
       description: 全商品を取得する
       parameters:
-        - name: page
+        - name: currentPage
           in: query
           required: true
           schema:
-            type: integer
+            $ref: '#/components/schemas/CurrentPage'
           explode: false
-        - name: limit
+        - name: perPage
           in: query
           required: true
           schema:
-            type: integer
+            $ref: '#/components/schemas/PerPage'
           explode: false
       responses:
         '200':
