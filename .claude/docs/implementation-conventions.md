@@ -228,4 +228,4 @@ data.result.id
 1. `src/{service-name}/` フォルダを作成
 2. `tspconfig.yaml` を作成（`emitter-output-dir: "{cwd}/dist"`, `output-file: "{service-name}-openapi.yaml"`）
 3. `main.tsp` を作成してルーティングを定義
-4. `package.json` の `build` スクリプトに `&& tsp compile src/{service-name}` を追加
+4. `package.json` に `"build:{service-name}": "tsp compile src/{service-name}"` を追加

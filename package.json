@@ -6,7 +6,9 @@
   "scripts": {
     "check:updates": "pnpm outdated --recursive --long",
     "check:lefthook": "pnpm format-all",
-    "build": "pnpm run format-all && tsp compile src/hoge-backend && tsp compile src/foo-backend",
+    "build": "pnpm run format-all && run-s \"build:*\"",
+    "build:foo-backend": "tsp compile src/foo-backend",
+    "build:hoge-backend": "tsp compile src/hoge-backend",
     "format-all": "run-s \"format:*\"",
     "format:schema": "tsp format .",
     "format:package-json": "sort-package-json package.json",
