@@ -1,0 +1,13 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: schema-check
+      run: pnpm check:lefthook
+  skip:
+    - merge
+    - rebase
+
+commit-msg:
+  commands:
+    commitlint:
+      run: pnpm commitlint --edit {1}

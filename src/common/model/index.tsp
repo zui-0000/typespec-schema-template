@@ -1,0 +1,12 @@
+import "../meta/index.tsp";
+import "./AccessToken.tsp";
+import "./CreatedAt.tsp";
+import "./Gender.tsp";
+import "./MailAddress.tsp";
+import "./Password.tsp";
+import "./PhoneNumber.tsp";
+import "./PostalCode.tsp";
+import "./Prefecture.tsp";
+import "./RefreshToken.tsp";
+import "./UpdatedAt.tsp";
+import "./Uuid.tsp";

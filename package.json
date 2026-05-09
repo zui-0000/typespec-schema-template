@@ -1,0 +1,34 @@
+{
+  "name": "typespec-schema-template",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check:updates": "pnpm outdated --recursive --long",
+    "check:lefthook": "pnpm format-all",
+    "build": "pnpm run format-all && tsp compile src/hoge-backend",
+    "format-all": "run-s \"format:*\"",
+    "format:schema": "tsp format .",
+    "format:package-json": "sort-package-json package.json",
+    "prepare": "lefthook install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.0.0",
+    "@commitlint/config-conventional": "^21.0.0",
+    "@typespec/compiler": "^1.11.0",
+    "@typespec/http": "^1.11.0",
+    "@typespec/openapi": "^1.11.0",
+    "@typespec/openapi3": "^1.11.0",
+    "@typespec/rest": "^0.81.0",
+    "@typespec/versioning": "^0.81.0",
+    "lefthook": "^2.1.6",
+    "npm-run-all2": "^8.0.4",
+    "sort-package-json": "^3.6.1"
+  },
+  "packageManager": "pnpm@11.0.9",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "lefthook"
+    ]
+  }
+}

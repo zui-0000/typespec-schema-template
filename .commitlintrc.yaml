@@ -1,0 +1,37 @@
+extends:
+  - "@commitlint/config-conventional"
+
+rules:
+  # type (prefix) の意味
+  # - feat: 新しいスキーマ・エンドポイントの追加
+  # - fix: スキーマ定義の誤り修正
+  # - docs: コメントや README の更新
+  # - refactor: 構造の整理（共通型の切り出しなど、定義内容は変えない）
+  # - chore: 依存更新・ツール設定変更
+  # - ci: CI設定やスクリプトの変更（GitHub Actions等）
+  # - build: TypeSpec のビルド設定変更
+  # - revert: 以前のコミットの取り消し
+  type-enum:
+    - 2
+    - always
+    - - feat
+      - fix
+      - docs
+      - refactor
+      - chore
+      - ci
+      - build
+      - revert
+
+  # subject は必須（0 にすると必須でなくなる）
+  subject-empty:
+    - 2
+    - never
+
+  # 日本語だと subject の大文字開始ルールは邪魔なのでOFF
+  subject-case:
+    - 0
+
+  # 本文（body）を必須にしない
+  body-empty:
+    - 0

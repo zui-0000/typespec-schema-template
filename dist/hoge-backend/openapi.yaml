@@ -1,0 +1,549 @@
+openapi: 3.0.0
+info:
+  title: Hoge Backend API
+  version: 0.0.0
+tags:
+  - name: Users
+paths:
+  /users:
+    get:
+      operationId: listUsers
+      description: 全ユーザーを取得する
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+          explode: false
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: integer
+          explode: false
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponse'
+        '500':
+          description: サーバーエラー
+      tags:
+        - Users
+    post:
+      operationId: createUser
+      description: ユーザーを新規作成する
+      parameters: []
+      responses:
+        '201':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateResponse'
+        '400':
+          description: リクエスト内容が不正
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+        '500':
+          description: サーバーエラー
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateRequest'
+  /users/{id}:
+    get:
+      operationId: getUser
+      description: IDを指定してユーザーを取得する
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Uuid'
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGetResponse'
+        '404':
+          description: リソースが見つからない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundException'
+        '500':
+          description: サーバーエラー
+      tags:
+        - Users
+    put:
+      operationId: updateUser
+      description: ユーザーを更新する
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Uuid'
+      responses:
+        '204':
+          description: 成功
+        '400':
+          description: リクエスト内容が不正
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+        '404':
+          description: リソースが見つからない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundException'
+        '500':
+          description: サーバーエラー
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+    delete:
+      operationId: deleteUser
+      description: ユーザーを削除する
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Uuid'
+      responses:
+        '204':
+          description: 成功
+        '404':
+          description: リソースが見つからない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundException'
+        '500':
+          description: サーバーエラー
+      tags:
+        - Users
+components:
+  schemas:
+    AddressLine1:
+      type: string
+      minLength: 1
+      maxLength: 100
+      description: '住所: 市区町村・番地 (最大100文字)'
+      title: AddressLine1
+      example: 千代田区千代田1-1
+    AddressLine2:
+      type: string
+      maxLength: 100
+      description: '住所: 建物名・号室 (最大100文字、任意)'
+      title: AddressLine2
+      example: グランドタワー101号室
+    BadRequestException:
+      type: object
+      required:
+        - errorCode
+        - message
+        - meta
+      properties:
+        errorCode:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          $ref: '#/components/schemas/ErrorMessage'
+        meta:
+          $ref: '#/components/schemas/CommonResponseMeta'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+      description: リクエスト内容が不正
+      title: BadRequestException
+      example:
+        errorCode: '4000'
+        message: BadRequestException
+        meta:
+          respondedAt: '2025-01-01T12:00:00Z'
+        details:
+          - field: email
+            message: メールアドレスの形式が不正です
+    CommonResponseMeta:
+      type: object
+      required:
+        - respondedAt
+      properties:
+        respondedAt:
+          $ref: '#/components/schemas/RespondedAt'
+      title: CommonResponseMeta
+    CurrentPage:
+      type: integer
+      minimum: 1
+      description: 現在のページ番号
+      title: CurrentPage
+    ErrorCode:
+      type: string
+      description: エラーコード
+      title: ErrorCode
+      example: '4000'
+    ErrorDetail:
+      type: object
+      required:
+        - field
+        - message
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+      description: バリデーションエラーの詳細
+      title: ErrorDetail
+    ErrorMessage:
+      type: string
+      description: エラーメッセージ
+      title: ErrorMessage
+      example: BadRequestException
+    FirstName:
+      type: string
+      minLength: 1
+      maxLength: 25
+      description: ユーザー名 (最大25文字)
+      title: FirstName
+      example: 太郎
+    Gender:
+      type: number
+      enum:
+        - 0
+        - 1
+      description: 性別
+      title: Gender
+    LastName:
+      type: string
+      minLength: 1
+      maxLength: 25
+      description: ユーザー姓 (最大25文字)
+      title: LastName
+      example: 山田
+    MailAddress:
+      type: string
+      pattern: ^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+      description: メールアドレス (RFC 5322準拠)
+      title: MailAddress
+      example: user@example.com
+    PerPage:
+      type: integer
+      minimum: 1
+      description: 1ページあたりの件数
+      title: PerPage
+    PhoneNumber:
+      type: string
+      minLength: 11
+      maxLength: 11
+      pattern: ^[0-9]{11}$
+      description: 電話番号 (11桁固定、ハイフンなし)
+      title: PhoneNumber
+      example: '09012345678'
+    PostalCode:
+      type: string
+      minLength: 7
+      maxLength: 7
+      pattern: ^[0-9]{7}$
+      description: 郵便番号 (ハイフンなし7桁)
+      title: PostalCode
+      example: '1000001'
+    Prefecture:
+      type: number
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        - 16
+        - 17
+        - 18
+        - 19
+        - 20
+        - 21
+        - 22
+        - 23
+        - 24
+        - 25
+        - 26
+        - 27
+        - 28
+        - 29
+        - 30
+        - 31
+        - 32
+        - 33
+        - 34
+        - 35
+        - 36
+        - 37
+        - 38
+        - 39
+        - 40
+        - 41
+        - 42
+        - 43
+        - 44
+        - 45
+        - 46
+        - 47
+      description: 都道府県 (JIS X 0401に基づく番号)
+      title: Prefecture
+    ResourceNotFoundException:
+      type: object
+      required:
+        - errorCode
+        - message
+        - meta
+      properties:
+        errorCode:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          $ref: '#/components/schemas/ErrorMessage'
+        meta:
+          $ref: '#/components/schemas/CommonResponseMeta'
+      description: リソースが存在しない
+      title: ResourceNotFoundException
+      example:
+        errorCode: '4040'
+        message: ResourceNotFoundException
+        meta:
+          respondedAt: '2025-01-01T12:00:00Z'
+    RespondedAt:
+      type: string
+      description: 'レスポンス日時 (ISO 8601形式: YYYY-MM-DDTHH:mm:ss.sssZ, PostgreSQL TIMESTAMPTZ互換)'
+      title: RespondedAt
+      example: '2025-01-01T12:00:00Z'
+    TotalCount:
+      type: integer
+      minimum: 0
+      description: 総件数
+      title: TotalCount
+    TotalPages:
+      type: integer
+      minimum: 0
+      description: 総ページ数
+      title: TotalPages
+    UserCreateRequest:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - mailAddress
+        - phoneNumber
+        - gender
+        - postalCode
+        - prefecture
+        - addressLine1
+        - addressLine2
+      properties:
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        mailAddress:
+          $ref: '#/components/schemas/MailAddress'
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        postalCode:
+          $ref: '#/components/schemas/PostalCode'
+        prefecture:
+          $ref: '#/components/schemas/Prefecture'
+        addressLine1:
+          $ref: '#/components/schemas/AddressLine1'
+        addressLine2:
+          $ref: '#/components/schemas/AddressLine2'
+      title: UserCreateRequest
+    UserCreateResponse:
+      type: object
+      required:
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/CommonResponseMeta'
+      title: UserCreateResponse
+    UserGetResponse:
+      type: object
+      required:
+        - result
+        - meta
+      properties:
+        result:
+          $ref: '#/components/schemas/UserGetResult'
+        meta:
+          $ref: '#/components/schemas/CommonResponseMeta'
+      title: UserGetResponse
+    UserGetResult:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+        - mailAddress
+        - phoneNumber
+        - gender
+        - postalCode
+        - prefecture
+        - addressLine1
+        - addressLine2
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        mailAddress:
+          $ref: '#/components/schemas/MailAddress'
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        postalCode:
+          $ref: '#/components/schemas/PostalCode'
+        prefecture:
+          $ref: '#/components/schemas/Prefecture'
+        addressLine1:
+          $ref: '#/components/schemas/AddressLine1'
+        addressLine2:
+          $ref: '#/components/schemas/AddressLine2'
+      title: UserGetResult
+    UserListPagination:
+      type: object
+      required:
+        - totalCount
+        - totalPages
+        - currentPage
+        - perPage
+      properties:
+        totalCount:
+          $ref: '#/components/schemas/TotalCount'
+        totalPages:
+          $ref: '#/components/schemas/TotalPages'
+        currentPage:
+          $ref: '#/components/schemas/CurrentPage'
+        perPage:
+          $ref: '#/components/schemas/PerPage'
+      title: UserListPagination
+    UserListResponse:
+      type: object
+      required:
+        - result
+        - meta
+        - pagination
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserListResult'
+        meta:
+          $ref: '#/components/schemas/CommonResponseMeta'
+        pagination:
+          $ref: '#/components/schemas/UserListPagination'
+      title: UserListResponse
+    UserListResult:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+        - mailAddress
+        - phoneNumber
+        - gender
+        - postalCode
+        - prefecture
+        - addressLine1
+        - addressLine2
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        mailAddress:
+          $ref: '#/components/schemas/MailAddress'
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        postalCode:
+          $ref: '#/components/schemas/PostalCode'
+        prefecture:
+          $ref: '#/components/schemas/Prefecture'
+        addressLine1:
+          $ref: '#/components/schemas/AddressLine1'
+        addressLine2:
+          $ref: '#/components/schemas/AddressLine2'
+      title: UserListResult
+    UserUpdateRequest:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - mailAddress
+        - phoneNumber
+        - gender
+        - postalCode
+        - prefecture
+        - addressLine1
+        - addressLine2
+      properties:
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        mailAddress:
+          $ref: '#/components/schemas/MailAddress'
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        postalCode:
+          $ref: '#/components/schemas/PostalCode'
+        prefecture:
+          $ref: '#/components/schemas/Prefecture'
+        addressLine1:
+          $ref: '#/components/schemas/AddressLine1'
+        addressLine2:
+          $ref: '#/components/schemas/AddressLine2'
+      title: UserUpdateRequest
+    Uuid:
+      type: string
+      pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$
+      description: UUID v7
+      title: Uuid
+      example: 018eef15-1234-7123-8123-123456789abc
