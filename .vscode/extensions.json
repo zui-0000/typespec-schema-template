@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "streetsidesoftware.code-spell-checker",
+    "editorconfig.editorconfig",
+    "usernamehw.errorlens",
+    "mhutchie.git-graph",
+    "oderwat.indent-rainbow",
+    "ms-ceintl.vscode-language-pack-ja",
+    "gruntfuggly.todo-tree",
+    "typespec.typespec-vscode",
+    "mosapride.zenkaku",
+  ]
+}
