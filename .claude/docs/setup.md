@@ -17,7 +17,7 @@ pnpm install
 |---------|------|
 | `pnpm build` | フォーマット後、全サービスをビルド |
 | `pnpm preview` | Swagger UI をローカル起動（http://localhost:8080） |
-| `pnpm format-all` | スキーマ + package.json をフォーマット |
+| `pnpm format` | スキーマをフォーマット |
 | `pnpm check:updates` | 依存パッケージの更新確認 |
 
 ビルド成果物は `dist/{service-name}-openapi.yaml` に出力される。
