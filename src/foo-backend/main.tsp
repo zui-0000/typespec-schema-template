@@ -16,24 +16,25 @@ namespace FooBackendApi {
     /** 全商品を取得する */
     @get
     @operationId("listProducts")
-    op list(
-      @query currentPage: CurrentPage,
-      @query perPage: PerPage,
-    ): SuccessOkResponse<ProductListResponse> | InternalServerErrorResponse;
+    op list(@query currentPage: CurrentPage, @query perPage: PerPage):
+      | SuccessOkResponse<ProductListResponse>
+      | InternalServerErrorResponse;
 
     /** IDを指定して商品を取得する */
     @get
     @route("/{id}")
     @operationId("getProduct")
-    op get(
-      @path id: ProductId,
-    ): SuccessOkResponse<ProductGetResponse> | NotFoundErrorResponse | InternalServerErrorResponse;
+    op get(@path id: ProductId):
+      | SuccessOkResponse<ProductGetResponse>
+      | NotFoundErrorResponse
+      | InternalServerErrorResponse;
 
     /** 商品を新規作成する */
     @post
     @operationId("createProduct")
-    op create(
-      @body body: ProductCreateRequest,
-    ): SuccessCreatedResponse<ProductCreateResponse> | BadRequestErrorResponse | InternalServerErrorResponse;
+    op create(@body body: ProductCreateRequest):
+      | SuccessCreatedResponse<ProductCreateResponse>
+      | BadRequestErrorResponse
+      | InternalServerErrorResponse;
   }
 }
