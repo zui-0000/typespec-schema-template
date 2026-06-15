@@ -223,9 +223,38 @@ data.result.id
 4041 → 404系の固有エラー1番目
 ```
 
+## tspconfig.yaml の構成ルール
+
+各サービスの `tspconfig.yaml` は以下の形式で作成する。
+
+```yaml
+kind: project
+entrypoint: main.tsp
+emit:
+  - "@typespec/openapi3"
+options:
+  "@typespec/openapi3":
+    emitter-output-dir: "{cwd}/dist"
+    output-file: "{service-name}-openapi.yaml"
+```
+
+### `kind: project`
+
+TypeSpec 1.13.0 で追加されたフィールド。このディレクトリがプロジェクトの境界であることを宣言する。
+
+設定することで以下の効果がある：
+
+- **IDE 言語サーバーの精度向上**: `.tsp` ファイルを開いたとき、どのプロジェクトに属するかを正確に判定できるようになる
+- **`--config` 使用時の自動継承**: `--config` で別の設定ファイルを指定した場合に `entrypoint` や `features` の設定を自動で引き継ぐ
+
+### `entrypoint`
+
+プロジェクトのエントリーポイントとなる `.tsp` ファイルを指定する。省略時のデフォルトは `main.tsp`。
+このリポジトリでは常に `main.tsp` を使用するため、明示的に記載する。
+
 ## サービスの追加方法
 
 1. `src/{service-name}/` フォルダを作成
-2. `tspconfig.yaml` を作成（`emitter-output-dir: "{cwd}/dist"`, `output-file: "{service-name}-openapi.yaml"`）
+2. `tspconfig.yaml` を作成（上記「tspconfig.yaml の構成ルール」を参照）
 3. `main.tsp` を作成してルーティングを定義
 4. `package.json` に `"build:{service-name}": "tsp compile src/{service-name}"` を追加
