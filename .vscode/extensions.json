@@ -9,6 +9,7 @@
     "gruntfuggly.todo-tree",
     "typespec.typespec-vscode",
     "mosapride.zenkaku",
-    "hverlin.mise-vscode"
+    "hverlin.mise-vscode",
+    "tombi-org.tombi-vscode"
   ]
 }
