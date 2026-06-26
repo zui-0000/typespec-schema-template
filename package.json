@@ -14,8 +14,8 @@
     "preview": "echo 'Swagger UI: http://localhost:8080' && docker compose up"
   },
   "devDependencies": {
-    "@commitlint/cli": "^21.0.2",
-    "@commitlint/config-conventional": "^21.0.2",
+    "@commitlint/cli": "^21.1.0",
+    "@commitlint/config-conventional": "^21.1.0",
     "@typespec/compiler": "^1.13.0",
     "@typespec/http": "^1.13.0",
     "@typespec/openapi": "^1.13.0",
