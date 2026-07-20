@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   title: Foo Backend API
   version: 0.0.0
@@ -108,14 +108,14 @@ components:
             $ref: '#/components/schemas/ErrorDetail'
       description: リクエスト内容が不正
       title: BadRequestException
-      example:
-        errorCode: '4000'
-        message: BadRequestException
-        meta:
-          respondedAt: '2025-01-01T12:00:00Z'
-        details:
-          - field: email
-            message: メールアドレスの形式が不正です
+      examples:
+        - errorCode: '4000'
+          message: BadRequestException
+          meta:
+            respondedAt: '2025-01-01T12:00:00Z'
+          details:
+            - field: email
+              message: メールアドレスの形式が不正です
     CommonResponseMeta:
       type: object
       required:
@@ -133,7 +133,8 @@ components:
       type: string
       description: エラーコード
       title: ErrorCode
-      example: '4000'
+      examples:
+        - '4000'
     ErrorDetail:
       type: object
       required:
@@ -150,7 +151,8 @@ components:
       type: string
       description: エラーメッセージ
       title: ErrorMessage
-      example: BadRequestException
+      examples:
+        - BadRequestException
     PerPage:
       type: integer
       minimum: 1
@@ -205,7 +207,8 @@ components:
       pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$
       description: 商品ID (UUID v7)
       title: ProductId
-      example: 018eef15-1234-7123-8123-123456789abc
+      examples:
+        - 018eef15-1234-7123-8123-123456789abc
     ProductListPagination:
       type: object
       required:
@@ -259,13 +262,15 @@ components:
       maxLength: 100
       description: 商品名
       title: ProductName
-      example: TypeSpec入門書
+      examples:
+        - TypeSpec入門書
     ProductPrice:
       type: integer
       minimum: 0
       description: 商品価格（円）
       title: ProductPrice
-      example: 1980
+      examples:
+        - 1980
     ResourceNotFoundException:
       type: object
       required:
@@ -281,16 +286,18 @@ components:
           $ref: '#/components/schemas/CommonResponseMeta'
       description: リソースが存在しない
       title: ResourceNotFoundException
-      example:
-        errorCode: '4040'
-        message: ResourceNotFoundException
-        meta:
-          respondedAt: '2025-01-01T12:00:00Z'
+      examples:
+        - errorCode: '4040'
+          message: ResourceNotFoundException
+          meta:
+            respondedAt: '2025-01-01T12:00:00Z'
     RespondedAt:
       type: string
-      description: 'レスポンス日時 (ISO 8601形式: YYYY-MM-DDTHH:mm:ss.sssZ, PostgreSQL TIMESTAMPTZ互換)'
+      format: date-time
+      description: レスポンス日時 (RFC 3339 / ISO 8601, PostgreSQL TIMESTAMPTZ互換)
       title: RespondedAt
-      example: '2025-01-01T12:00:00Z'
+      examples:
+        - '2025-01-01T12:00:00Z'
     TotalCount:
       type: integer
       minimum: 0

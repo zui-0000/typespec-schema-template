@@ -7,7 +7,7 @@ import "../model/index.tsp";
 @example(#{
   errorCode: "4010",
   message: "UnauthorizedException",
-  meta: #{ respondedAt: "2025-01-01T12:00:00Z" },
+  meta: #{ respondedAt: RespondedAt.fromISO("2025-01-01T12:00:00Z") },
 })
 model UnauthorizedException {
   errorCode: ErrorCode;

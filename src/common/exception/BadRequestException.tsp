@@ -8,7 +8,7 @@ import "./ErrorDetail.tsp";
 @example(#{
   errorCode: "4000",
   message: "BadRequestException",
-  meta: #{ respondedAt: "2025-01-01T12:00:00Z" },
+  meta: #{ respondedAt: RespondedAt.fromISO("2025-01-01T12:00:00Z") },
   details: #[#{ field: "email", message: "メールアドレスの形式が不正です" }],
 })
 model BadRequestException {
