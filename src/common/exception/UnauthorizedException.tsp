@@ -1,4 +1,3 @@
-import "@typespec/rest";
 import "../model/index.tsp";
 
 @summary("UnauthorizedException")

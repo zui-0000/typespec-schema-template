@@ -1,4 +1,3 @@
-import "@typespec/rest";
 import "../../common/model/index.tsp";
 import "./model/index.tsp";
 

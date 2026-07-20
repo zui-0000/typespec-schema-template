@@ -26,12 +26,6 @@ importers:
       '@typespec/openapi3':
         specifier: ^1.14.0
         version: 1.14.0(@typespec/compiler@1.14.0(@types/node@25.6.2))(@typespec/http@1.14.0(@typespec/compiler@1.14.0(@types/node@25.6.2)))(@typespec/openapi@1.14.0(@typespec/compiler@1.14.0(@types/node@25.6.2))(@typespec/http@1.14.0(@typespec/compiler@1.14.0(@types/node@25.6.2))))(@typespec/versioning@0.84.0(@typespec/compiler@1.14.0(@types/node@25.6.2)))
-      '@typespec/rest':
-        specifier: ^0.84.0
-        version: 0.84.0(@typespec/compiler@1.14.0(@types/node@25.6.2))(@typespec/http@1.14.0(@typespec/compiler@1.14.0(@types/node@25.6.2)))
-      '@typespec/versioning':
-        specifier: ^0.84.0
-        version: 0.84.0(@typespec/compiler@1.14.0(@types/node@25.6.2))
       lefthook:
         specifier: ^2.1.10
         version: 2.1.10
@@ -354,13 +348,6 @@ packages:
 
   '@typespec/openapi@1.14.0':
     resolution: {integrity: sha512-KL7kImPhCXRmxpHVt1k7TWaa4bb3NbSeUx2rxyxeq7lYZFllI6/NYRCTOI/5JOrbElWmmSxrajU9K9IAKI6PkQ==}
-    engines: {node: '>=22.0.0'}
-    peerDependencies:
-      '@typespec/compiler': ^1.14.0
-      '@typespec/http': ^1.14.0
-
-  '@typespec/rest@0.84.0':
-    resolution: {integrity: sha512-9s5dDfRoHRPdtbVvkBasUx/RnMvwWMTuXRieSQDEji4gWGgxVu4Zt4MiEEKSfQrkMr3Aw0QjRCSxBxjMCHIOmA==}
     engines: {node: '>=22.0.0'}
     peerDependencies:
       '@typespec/compiler': ^1.14.0
@@ -1152,14 +1139,10 @@ snapshots:
       '@typespec/compiler': 1.14.0(@types/node@25.6.2)
       '@typespec/http': 1.14.0(@typespec/compiler@1.14.0(@types/node@25.6.2))
 
-  '@typespec/rest@0.84.0(@typespec/compiler@1.14.0(@types/node@25.6.2))(@typespec/http@1.14.0(@typespec/compiler@1.14.0(@types/node@25.6.2)))':
-    dependencies:
-      '@typespec/compiler': 1.14.0(@types/node@25.6.2)
-      '@typespec/http': 1.14.0(@typespec/compiler@1.14.0(@types/node@25.6.2))
-
   '@typespec/versioning@0.84.0(@typespec/compiler@1.14.0(@types/node@25.6.2))':
     dependencies:
       '@typespec/compiler': 1.14.0(@types/node@25.6.2)
+    optional: true
 
   ajv-draft-04@1.0.0(ajv@8.20.0):
     optionalDependencies:
