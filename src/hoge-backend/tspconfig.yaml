@@ -6,3 +6,5 @@ options:
   "@typespec/openapi3":
     emitter-output-dir: "{cwd}/dist"
     output-file: "hoge-backend-openapi.yaml"
+    openapi-versions:
+      - "3.1.0"
