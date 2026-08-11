@@ -1,8 +1,9 @@
 import "../../common/model/index.tsp";
 import "./model/index.tsp";
 
-@summary("UserCreateRequest")
-model UserCreateRequest {
+@summary("ListUsersResult")
+model ListUsersResult {
+  id: Uuid;
   firstName: FirstName;
   lastName: LastName;
   mailAddress: MailAddress;

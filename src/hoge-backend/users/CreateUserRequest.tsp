@@ -1,8 +1,8 @@
 import "../../common/model/index.tsp";
 import "./model/index.tsp";
 
-@summary("UserUpdateRequest")
-model UserUpdateRequest {
+@summary("CreateUserRequest")
+model CreateUserRequest {
   firstName: FirstName;
   lastName: LastName;
   mailAddress: MailAddress;

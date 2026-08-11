@@ -1,9 +1,8 @@
 import "../../common/model/index.tsp";
 import "./model/index.tsp";
 
-@summary("UserGetResult")
-model UserGetResult {
-  id: Uuid;
+@summary("UpdateUserRequest")
+model UpdateUserRequest {
   firstName: FirstName;
   lastName: LastName;
   mailAddress: MailAddress;

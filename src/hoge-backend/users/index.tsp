@@ -1,7 +1,8 @@
 import "./model/index.tsp";
-import "./UserCreateRequest.tsp";
-import "./UserUpdateRequest.tsp";
-import "./UserCreateResponse.tsp";
-import "./UserGetResponse.tsp";
-import "./UserListResponse.tsp";
-import "./UserUpdateResponse.tsp";
+import "./CreateUserRequest.tsp";
+import "./CreateUserResponse.tsp";
+import "./GetUserResponse.tsp";
+import "./ListUsersPagination.tsp";
+import "./ListUsersResponse.tsp";
+import "./ListUsersResult.tsp";
+import "./UpdateUserRequest.tsp";

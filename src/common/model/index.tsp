@@ -1,4 +1,3 @@
-import "../meta/index.tsp";
 import "./AccessToken.tsp";
 import "./CreatedAt.tsp";
 import "./Gender.tsp";

@@ -1,8 +1,8 @@
 import "../../common/model/index.tsp";
 import "./model/index.tsp";
 
-@summary("UserListResult")
-model UserListResult {
+@summary("GetUserResponse")
+model GetUserResponse {
   id: Uuid;
   firstName: FirstName;
   lastName: LastName;

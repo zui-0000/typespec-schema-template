@@ -10,6 +10,7 @@
     "typespec.typespec-vscode",
     "mosapride.zenkaku",
     "hverlin.mise-vscode",
-    "tombi-org.tombi-vscode"
+    "tombi-org.tombi-vscode",
+    "caniko.pkl-lsp"
   ]
 }

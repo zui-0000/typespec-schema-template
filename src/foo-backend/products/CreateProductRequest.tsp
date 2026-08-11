@@ -1,7 +1,7 @@
 import "./model/index.tsp";
 
-@summary("ProductCreateRequest")
-model ProductCreateRequest {
+@summary("CreateProductRequest")
+model CreateProductRequest {
   name: ProductName;
   price: ProductPrice;
 }

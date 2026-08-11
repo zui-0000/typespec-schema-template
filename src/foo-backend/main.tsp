@@ -16,7 +16,7 @@ namespace FooBackendApi {
     @get
     @operationId("listProducts")
     op list(@query currentPage: CurrentPage, @query perPage: PerPage):
-      | SuccessOkResponse<ProductListResponse>
+      | SuccessOkResponse<ListProductsResponse>
       | InternalServerErrorResponse;
 
     /** IDを指定して商品を取得する */
@@ -24,15 +24,15 @@ namespace FooBackendApi {
     @route("/{id}")
     @operationId("getProduct")
     op get(@path id: ProductId):
-      | SuccessOkResponse<ProductGetResponse>
+      | SuccessOkResponse<GetProductResponse>
       | NotFoundErrorResponse
       | InternalServerErrorResponse;
 
     /** 商品を新規作成する */
     @post
     @operationId("createProduct")
-    op create(@body body: ProductCreateRequest):
-      | SuccessCreatedResponse<ProductCreateResponse>
+    op create(@body body: CreateProductRequest):
+      | SuccessCreatedResponse<CreateProductResponse>
       | BadRequestErrorResponse
       | InternalServerErrorResponse;
   }

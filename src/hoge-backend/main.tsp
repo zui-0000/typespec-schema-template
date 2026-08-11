@@ -16,7 +16,7 @@ namespace HogeBackendApi {
     @get
     @operationId("listUsers")
     op list(@query currentPage: CurrentPage, @query perPage: PerPage):
-      | SuccessOkResponse<UserListResponse>
+      | SuccessOkResponse<ListUsersResponse>
       | InternalServerErrorResponse;
 
     /** IDを指定してユーザーを取得する */
@@ -24,15 +24,15 @@ namespace HogeBackendApi {
     @route("/{id}")
     @operationId("getUser")
     op get(@path id: Uuid):
-      | SuccessOkResponse<UserGetResponse>
+      | SuccessOkResponse<GetUserResponse>
       | NotFoundErrorResponse
       | InternalServerErrorResponse;
 
     /** ユーザーを新規作成する */
     @post
     @operationId("createUser")
-    op create(@body body: UserCreateRequest):
-      | SuccessCreatedResponse<UserCreateResponse>
+    op create(@body body: CreateUserRequest):
+      | SuccessCreatedResponse<CreateUserResponse>
       | BadRequestErrorResponse
       | InternalServerErrorResponse;
 
@@ -40,7 +40,7 @@ namespace HogeBackendApi {
     @put
     @route("/{id}")
     @operationId("updateUser")
-    op update(@path id: Uuid, @body body: UserUpdateRequest):
+    op update(@path id: Uuid, @body body: UpdateUserRequest):
       | SuccessNoContentResponse
       | BadRequestErrorResponse
       | NotFoundErrorResponse

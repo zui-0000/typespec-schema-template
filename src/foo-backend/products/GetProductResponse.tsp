@@ -1,7 +1,7 @@
 import "./model/index.tsp";
 
-@summary("ProductGetResult")
-model ProductGetResult {
+@summary("GetProductResponse")
+model GetProductResponse {
   id: ProductId;
   name: ProductName;
   price: ProductPrice;
