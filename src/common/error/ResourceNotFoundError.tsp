@@ -1,11 +1,11 @@
 import "./ErrorCode.tsp";
 import "./ErrorMessage.tsp";
 
-@summary("ResourceNotFoundException")
+@summary("ResourceNotFoundError")
 @doc("リソースが存在しない")
 @error
-@example(#{ errorCode: "4040", message: "ResourceNotFoundException" })
-model ResourceNotFoundException {
+@example(#{ errorCode: "4040", message: "ResourceNotFoundError" })
+model ResourceNotFoundError {
   errorCode: ErrorCode;
   message: ErrorMessage;
 }

@@ -106,10 +106,10 @@ scalar Uuid extends string;
 // モデル
 @example(#{
   errorCode: "4000",
-  message: "BadRequestException",
+  message: "BadRequestError",
   details: #[#{ field: "email", message: "メールアドレスの形式が不正です" }],
 })
-model BadRequestException { ... }
+model BadRequestError { ... }
 ```
 
 `utcDateTime` を継承した日時スカラー（`CreatedAt` / `UpdatedAt` など）は、
@@ -211,16 +211,16 @@ scalar CreatedAt extends utcDateTime;
 ```json
 {
   "errorCode": "4000",
-  "message": "BadRequestException"
+  "message": "BadRequestError"
 }
 ```
 
-`BadRequestException` のみ `details` を持つ（オプショナル）。
+`BadRequestError` のみ `details` を持つ（オプショナル）。
 
 ```json
 {
   "errorCode": "4000",
-  "message": "BadRequestException",
+  "message": "BadRequestError",
   "details": [
     { "field": "email", "message": "メールアドレスの形式が不正です" }
   ]

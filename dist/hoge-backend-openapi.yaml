@@ -49,7 +49,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestException'
+                $ref: '#/components/schemas/BadRequestError'
         '500':
           description: サーバーエラー
       tags:
@@ -82,7 +82,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+                $ref: '#/components/schemas/ResourceNotFoundError'
         '500':
           description: サーバーエラー
       tags:
@@ -104,13 +104,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestException'
+                $ref: '#/components/schemas/BadRequestError'
         '404':
           description: リソースが見つからない
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+                $ref: '#/components/schemas/ResourceNotFoundError'
         '500':
           description: サーバーエラー
       tags:
@@ -138,7 +138,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+                $ref: '#/components/schemas/ResourceNotFoundError'
         '500':
           description: サーバーエラー
       tags:
@@ -160,7 +160,7 @@ components:
       title: AddressLine2
       examples:
         - グランドタワー101号室
-    BadRequestException:
+    BadRequestError:
       type: object
       required:
         - errorCode
@@ -175,10 +175,10 @@ components:
           items:
             $ref: '#/components/schemas/ErrorDetail'
       description: リクエスト内容が不正
-      title: BadRequestException
+      title: BadRequestError
       examples:
         - errorCode: '4000'
-          message: BadRequestException
+          message: BadRequestError
           details:
             - field: email
               message: メールアドレスの形式が不正です
@@ -250,7 +250,7 @@ components:
       description: エラーメッセージ
       title: ErrorMessage
       examples:
-        - BadRequestException
+        - BadRequestError
     FirstName:
       type: string
       minLength: 1
@@ -456,7 +456,7 @@ components:
         - 47
       description: 都道府県 (JIS X 0401に基づく番号)
       title: Prefecture
-    ResourceNotFoundException:
+    ResourceNotFoundError:
       type: object
       required:
         - errorCode
@@ -467,10 +467,10 @@ components:
         message:
           $ref: '#/components/schemas/ErrorMessage'
       description: リソースが存在しない
-      title: ResourceNotFoundException
+      title: ResourceNotFoundError
       examples:
         - errorCode: '4040'
-          message: ResourceNotFoundException
+          message: ResourceNotFoundError
     TotalCount:
       type: integer
       minimum: 0

@@ -3,13 +3,13 @@
 ```
 src/
 ├── common/                    # 複数サービスで共有する共通型
-│   ├── exception/             # エラーレスポンス型（エラーごとに定義）
+│   ├── error/                 # エラーレスポンス型（エラーごとに定義）
 │   │   ├── ErrorCode.tsp
 │   │   ├── ErrorMessage.tsp
 │   │   ├── ErrorDetail.tsp
-│   │   ├── BadRequestException.tsp
-│   │   ├── ResourceNotFoundException.tsp
-│   │   └── UnauthorizedException.tsp
+│   │   ├── BadRequestError.tsp
+│   │   ├── ResourceNotFoundError.tsp
+│   │   └── UnauthorizedError.tsp
 │   ├── model/                 # 汎用スカラー・型（ドメイン非依存）
 │   │   ├── AccessToken.tsp
 │   │   ├── Gender.tsp
