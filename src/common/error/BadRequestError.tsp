@@ -1,17 +1,18 @@
-import "./ErrorCode.tsp";
-import "./ErrorMessage.tsp";
-import "./ErrorDetail.tsp";
+import "./ErrorItem.tsp";
+import "./ErrorTitle.tsp";
 
 @summary("BadRequestError")
-@doc("リクエスト内容が不正")
+@doc("リクエスト内容が不正（汎用）")
 @error
 @example(#{
-  errorCode: "4000",
-  message: "BadRequestError",
-  details: #[#{ field: "email", message: "メールアドレスの形式が不正です" }],
+  status: 400,
+  code: "4000",
+  title: "リクエスト内容が不正です",
+  errors: #[#{ field: "email", message: "メールアドレスの形式が不正です" }],
 })
 model BadRequestError {
-  errorCode: ErrorCode;
-  message: ErrorMessage;
-  details?: ErrorDetail[];
+  status: 400;
+  code: "4000";
+  title: ErrorTitle;
+  errors?: ErrorItem[];
 }

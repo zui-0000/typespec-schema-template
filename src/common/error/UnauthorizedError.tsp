@@ -1,11 +1,11 @@
-import "./ErrorCode.tsp";
-import "./ErrorMessage.tsp";
+import "./ErrorTitle.tsp";
 
 @summary("UnauthorizedError")
-@doc("認証情報が不正")
+@doc("認証情報が不正（汎用）")
 @error
-@example(#{ errorCode: "4010", message: "UnauthorizedError" })
+@example(#{ status: 401, code: "4010", title: "認証情報が正しくありません" })
 model UnauthorizedError {
-  errorCode: ErrorCode;
-  message: ErrorMessage;
+  status: 401;
+  code: "4010";
+  title: ErrorTitle;
 }

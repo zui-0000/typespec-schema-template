@@ -105,9 +105,10 @@ scalar Uuid extends string;
 
 // モデル
 @example(#{
-  errorCode: "4000",
-  message: "BadRequestError",
-  details: #[#{ field: "email", message: "メールアドレスの形式が不正です" }],
+  status: 400,
+  code: "4000",
+  title: "リクエスト内容が不正です",
+  errors: #[#{ field: "email", message: "メールアドレスの形式が不正です" }],
 })
 model BadRequestError { ... }
 ```
@@ -196,38 +197,119 @@ scalar CreatedAt extends utcDateTime;
 
 ## エラーレスポンスの設計方針
 
-エラーレスポンスのボディは `error` オブジェクトでラップしない。HTTP ステータスコード（400・401・404 など）がすでにエラーであることを表しているため、さらに包む意味がなく、クライアントの処理も複雑になるため。
+### ラッパーで包まない
+
+エラーレスポンスのボディは `error` オブジェクトでラップしない。HTTP ステータスコード（400・401・404 など）が
+すでにエラーであることを表しているため、さらに包む意味がなく、クライアントの処理も複雑になるため。
 
 ```json
 // NG: error でラップする
-{ "error": { "errorCode": "4000", "message": "..." } }
+{ "error": { "code": "4000", "title": "..." } }
 
 // OK: フラットに返す
-{ "errorCode": "4000", "message": "..." }
+{ "code": "4000", "title": "..." }
 ```
+
+`response/ErrorResponses.tsp` の `@body error: BadRequestError` は**ラップではない**。
+`@body` を付けたプロパティはボディそのものになり、プロパティ名（`error`）は JSON に現れない。
+
+### `status` と `code` はリテラルで固定する
+
+各エラーモデルは `status` と `code` を**リテラル型**で持つ。共有スカラーにして値を `@example` で示す方式は取らない。
+
+```tsp
+// NG: 値が契約に出ない
+@example("4011")
+scalar ErrorCode extends string;
+
+model PasswordMismatchError {
+  code: ErrorCode;
+}
+
+// OK: 値そのものが型
+model PasswordMismatchError {
+  status: 401;
+  code: "4011";
+}
+```
+
+`@example` は制約ではないため、前者は OpenAPI 上ただの `type: string` になる。
+つまり**同じステータスの2つをクライアントが型で区別できない**。
+エラーを別モデルに分けた目的そのものが契約に表れない状態になる。
+
+リテラルにすると単一値の `enum` として出力される。
+
+```yaml
+code:
+  type: string
+  enum:
+    - '4011'
+```
+
+下流の生成器はこれを `z.literal("4011")` や `code: "4011"` に落とせるため、
+`code` を判別子とした**判別可能な直和（discriminated union）**として扱える。
+TypeScript で `type Result = { kind: "ok" } | { kind: "err" }` と書くのと同じ発想。
+
+例に挙げた `PasswordMismatchError`（401 / `4011`）は、サービス側に置くドメイン固有エラーの想定。
+汎用の `UnauthorizedError`（401 / `4010`）と**ステータスが同じ**という点がここでの要点で、
+`common/error/` の汎用エラーだけを見ていると必要性が見えにくい。
+
+### `status` はステータス行とボディの両方に出す
+
+ステータスがステータス行とボディの2箇所に出る重複は、承知のうえで受け入れる。
+**エラーボディだけを取り回す読み手**（ログ・通知・画面へ渡した後の値）が、
+HTTP の応答を持たないまま何が起きたかを判別できるようにするため。
+RFC 9457 の Problem Details も同じ理由で `status` を本文に持つ。
+
+ボディ側はリテラルに固定してあるため、ステータス行とのズレはクライアントの検証で落ちる。
+このリポジトリは契約だけを持つので、二重に書く箇所が生じるとすれば実装側。
+実装では1箇所で組み立ててステータス行とボディの両方に配ることを想定している。
+
+### `title` と `errors[].message` は役割が違う
+
+- `title`: **何が起きたか**を1行で表す。エラー単位で1つ。
+- `errors[].message`: **どのフィールドが、なぜ駄目か**を表す。フィールド単位で複数。
+
+同じ `message` という名前にすると、どちらの話か読む側が毎回考えることになるため名前を分けている。
+
+`title` には型名（`"BadRequestError"`）ではなく、人間が読める文（`"リクエスト内容が不正です"`）を入れる。
+型名は `code` と重複した情報であり、そのまま画面に出せない。
 
 ## エラーレスポンスの構造
 
 ```json
 {
-  "errorCode": "4000",
-  "message": "BadRequestError"
+  "status": 404,
+  "code": "4040",
+  "title": "指定されたリソースは存在しません"
 }
 ```
 
-`BadRequestError` のみ `details` を持つ（オプショナル）。
+`BadRequestError` のみ `errors` を持つ（オプショナル）。
+「どのフィールドが、なぜ駄目か」を返したいエラーが他に出てきた場合も同じ形で追加する。
 
 ```json
 {
-  "errorCode": "4000",
-  "message": "BadRequestError",
-  "details": [
+  "status": 400,
+  "code": "4000",
+  "title": "リクエスト内容が不正です",
+  "errors": [
     { "field": "email", "message": "メールアドレスの形式が不正です" }
   ]
 }
 ```
 
-500系はレスポンスボディを返さない（HTTP ステータスコードのみ）。
+500系もボディを返す。クライアントの受け口が全ステータスで同形になり、
+「500 だけ分岐が別」を無くせるため。ただし原因（例外・スタックトレース等）は露出せず、
+ログなど内部利用に留める。
+
+```json
+{
+  "status": 500,
+  "code": "5000",
+  "title": "サーバーで予期せぬエラーが発生しました"
+}
+```
 
 ## エラーコード体系
 
@@ -240,6 +322,21 @@ scalar CreatedAt extends utcDateTime;
 4040 → 404系の汎用エラー
 4041 → 404系の固有エラー1番目
 ```
+
+`common/error/` には汎用エラーのみを置く。
+
+| モデル | status | code |
+|--------|--------|------|
+| `BadRequestError` | 400 | `4000` |
+| `UnauthorizedError` | 401 | `4010` |
+| `ForbiddenError` | 403 | `4030` |
+| `ResourceNotFoundError` | 404 | `4040` |
+| `ConflictError` | 409 | `4090` |
+| `InternalServerError` | 500 | `5000` |
+
+ドメイン固有のエラー（「メールアドレスが既に使用されている」など）は、
+汎用エラーと同じ形のモデルを**サービス側**に定義し、連番を振る（`4091` など）。
+汎用の 409 で足りる衝突と、分岐させたい衝突を、クライアントが `code` で見分けられるようにするため。
 
 ## tspconfig.yaml の構成ルール
 

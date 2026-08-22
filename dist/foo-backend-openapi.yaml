@@ -30,7 +30,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListProductsResponse'
         '500':
-          description: サーバーエラー
+          description: サーバーエラー（汎用）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
       tags:
         - Products
     post:
@@ -45,13 +49,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateProductResponse'
         '400':
-          description: リクエスト内容が不正
+          description: リクエスト内容が不正（汎用）
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
         '500':
-          description: サーバーエラー
+          description: サーバーエラー（汎用）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
       tags:
         - Products
       requestBody:
@@ -78,13 +86,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetProductResponse'
         '404':
-          description: リソースが見つからない
+          description: リソースが見つからない（汎用）
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResourceNotFoundError'
         '500':
-          description: サーバーエラー
+          description: サーバーエラー（汎用）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
       tags:
         - Products
 components:
@@ -92,23 +104,31 @@ components:
     BadRequestError:
       type: object
       required:
-        - errorCode
-        - message
+        - status
+        - code
+        - title
       properties:
-        errorCode:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          $ref: '#/components/schemas/ErrorMessage'
-        details:
+        status:
+          type: number
+          enum:
+            - 400
+        code:
+          type: string
+          enum:
+            - '4000'
+        title:
+          $ref: '#/components/schemas/ErrorTitle'
+        errors:
           type: array
           items:
-            $ref: '#/components/schemas/ErrorDetail'
-      description: リクエスト内容が不正
+            $ref: '#/components/schemas/ErrorItem'
+      description: リクエスト内容が不正（汎用）
       title: BadRequestError
       examples:
-        - errorCode: '4000'
-          message: BadRequestError
-          details:
+        - status: 400
+          code: '4000'
+          title: リクエスト内容が不正です
+          errors:
             - field: email
               message: メールアドレスの形式が不正です
     CreateProductRequest:
@@ -135,13 +155,7 @@ components:
       minimum: 1
       description: 現在のページ番号
       title: CurrentPage
-    ErrorCode:
-      type: string
-      description: エラーコード
-      title: ErrorCode
-      examples:
-        - '4000'
-    ErrorDetail:
+    ErrorItem:
       type: object
       required:
         - field
@@ -151,14 +165,14 @@ components:
           type: string
         message:
           type: string
-      description: バリデーションエラーの詳細
-      title: ErrorDetail
-    ErrorMessage:
+      description: エラーの内訳。どのフィールドがなぜ不正かを示す
+      title: ErrorItem
+    ErrorTitle:
       type: string
-      description: エラーメッセージ
-      title: ErrorMessage
+      description: エラーの表題。何が起きたかを1行で表す
+      title: ErrorTitle
       examples:
-        - BadRequestError
+        - リクエスト内容が不正です
     GetProductResponse:
       type: object
       required:
@@ -173,6 +187,29 @@ components:
         price:
           $ref: '#/components/schemas/ProductPrice'
       title: GetProductResponse
+    InternalServerError:
+      type: object
+      required:
+        - status
+        - code
+        - title
+      properties:
+        status:
+          type: number
+          enum:
+            - 500
+        code:
+          type: string
+          enum:
+            - '5000'
+        title:
+          $ref: '#/components/schemas/ErrorTitle'
+      description: サーバー内部で予期せぬエラーが発生した（汎用）
+      title: InternalServerError
+      examples:
+        - status: 500
+          code: '5000'
+          title: サーバーで予期せぬエラーが発生しました
     ListProductsPagination:
       type: object
       required:
@@ -247,18 +284,26 @@ components:
     ResourceNotFoundError:
       type: object
       required:
-        - errorCode
-        - message
+        - status
+        - code
+        - title
       properties:
-        errorCode:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          $ref: '#/components/schemas/ErrorMessage'
-      description: リソースが存在しない
+        status:
+          type: number
+          enum:
+            - 404
+        code:
+          type: string
+          enum:
+            - '4040'
+        title:
+          $ref: '#/components/schemas/ErrorTitle'
+      description: リソースが存在しない（汎用）
       title: ResourceNotFoundError
       examples:
-        - errorCode: '4040'
-          message: ResourceNotFoundError
+        - status: 404
+          code: '4040'
+          title: 指定されたリソースは存在しません
     TotalCount:
       type: integer
       minimum: 0

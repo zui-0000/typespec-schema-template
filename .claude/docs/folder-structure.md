@@ -4,12 +4,14 @@
 src/
 ├── common/                    # 複数サービスで共有する共通型
 │   ├── error/                 # エラーレスポンス型（エラーごとに定義）
-│   │   ├── ErrorCode.tsp
-│   │   ├── ErrorMessage.tsp
-│   │   ├── ErrorDetail.tsp
+│   │   ├── ErrorTitle.tsp
+│   │   ├── ErrorItem.tsp
 │   │   ├── BadRequestError.tsp
+│   │   ├── UnauthorizedError.tsp
+│   │   ├── ForbiddenError.tsp
 │   │   ├── ResourceNotFoundError.tsp
-│   │   └── UnauthorizedError.tsp
+│   │   ├── ConflictError.tsp
+│   │   └── InternalServerError.tsp
 │   ├── model/                 # 汎用スカラー・型（ドメイン非依存）
 │   │   ├── AccessToken.tsp
 │   │   ├── Gender.tsp
