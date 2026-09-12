@@ -16,11 +16,11 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.2",
-    "@typespec/compiler": "^1.15.0",
-    "@typespec/http": "^1.15.0",
-    "@typespec/openapi": "^1.15.0",
-    "@typespec/openapi3": "^1.15.0",
-    "lefthook": "^2.1.10",
+    "@typespec/compiler": "^1.16.0",
+    "@typespec/http": "^1.16.0",
+    "@typespec/openapi": "^1.16.0",
+    "@typespec/openapi3": "^1.16.0",
+    "lefthook": "^2.1.12",
     "npm-run-all2": "^9.0.3"
   }
 }
