@@ -14,13 +14,13 @@
     "preview": "echo 'Swagger UI: http://localhost:8080' && docker compose up"
   },
   "devDependencies": {
-    "@commitlint/cli": "^21.2.2",
-    "@commitlint/config-conventional": "^21.2.2",
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
     "@typespec/compiler": "^1.16.0",
     "@typespec/http": "^1.16.0",
     "@typespec/openapi": "^1.16.0",
     "@typespec/openapi3": "^1.16.0",
-    "lefthook": "^2.1.12",
+    "lefthook": "^2.1.14",
     "npm-run-all2": "^9.0.3"
   }
 }
