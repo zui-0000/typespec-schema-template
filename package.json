@@ -21,6 +21,6 @@
     "@typespec/openapi": "^1.17.0",
     "@typespec/openapi3": "^1.17.0",
     "lefthook": "^2.2.2",
-    "npm-run-all2": "^9.0.3"
+    "npm-run-all2": "^9.0.4"
   }
 }
