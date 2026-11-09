@@ -18,3 +18,8 @@ trustPolicyExclude:
 
 # lockfile が使わなくなった trustPolicyExclude の項目を install のときに自動で消す
 trustPolicyExcludePrune: true
+
+# autoDedupe などの解決設定を pnpm-lock.yaml に記録する。記録がないと、frozen でない install の
+# たびに lockfile を解決し直す。pnpm 12.10.0 より前の版はこの設定を読めない
+lockfile:
+  includeResolutionSettings: true
