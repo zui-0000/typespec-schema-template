@@ -409,3 +409,7 @@ TypeSpec 1.13.0 で追加されたフィールド。このディレクトリが�
 2. `tspconfig.yaml` を作成（上記「tspconfig.yaml の構成ルール」を参照）
 3. `main.tsp` を作成してルーティングを定義
 4. `package.json` に `"build:{service-name}": "tsp compile src/{service-name}"` を追加
+5. `compose.yaml` の `URLS` に `{url: '/dist/{service-name}-openapi.yaml', name: '...'}` を追加（`pnpm preview` のドロップダウンに出すため）
+
+テンプレートのサンプル（`hoge-backend` / `foo-backend`）を消すときは、`src/` と `dist/` のファイルに加えて、
+`package.json` の `build:*` と `compose.yaml` の `URLS`・`URLS_PRIMARY_NAME` からも外す。
