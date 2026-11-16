@@ -1,25 +1,26 @@
-# 入れるときにスクリプト（postinstall など）を動かしてよいパッケージ。false は動かさない
+# インストール時にスクリプトを実行してよいパッケージ
+# - lefthook: postinstall は lefthook install を呼ぶだけで、package.json の prepare と重複するので不要
 allowBuilds:
-  lefthook: true
+  lefthook: false
 
-# 同じパッケージが複数の版で入っていて、1 つの版で全員の範囲を満たせるなら、その版にまとめる
+# pnpm add で版を固定して書く（^ を付けない）。版が動くのを、上げたときだけにするため
+savePrefix: ""
+
+# 1 つの版で全員の範囲を満たせるなら、その版にまとめる（既定は false）
 autoDedupe: true
 
-# 公開から 2 日（2880 分）たっていない版は入れない。
-minimumReleaseAge: 2880
+# サプライチェーン攻撃への備え。公開から 1 日たっていない版は入れない
+minimumReleaseAge: 1440
 
-# 前に公開された版より、公開の証明（trusted publishing・provenance）が弱い版は入れない
+# 以前の版より公開の証明（provenance など）が弱い版は入れない
 trustPolicy: no-downgrade
-
-# trustPolicy の対象から外す版
+# 例外は版まで書き、上げるたびに確かめ直す
+# - lefthook: CI 失敗でメンテナが手動公開したため provenance がない（evilmartians/lefthook#1600）
 trustPolicyExclude:
-  # CI 失敗でメンテナが手動公開したため provenance なし（evilmartians/lefthook#1600）
-  - 'lefthook@2.2.2'
-
-# lockfile が使わなくなった trustPolicyExclude の項目を install のときに自動で消す
+  - "lefthook@2.2.2"
+# 使われなくなった trustPolicyExclude の項目を install のときに消す
 trustPolicyExcludePrune: true
 
-# autoDedupe などの解決設定を pnpm-lock.yaml に記録する。記録がないと、frozen でない install の
-# たびに lockfile を解決し直す。pnpm 12.10.0 より前の版はこの設定を読めない
+# autoDedupe などの解決設定を lockfile に記録する。ないと frozen でない install のたびに解決し直す
 lockfile:
   includeResolutionSettings: true
