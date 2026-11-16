@@ -5,7 +5,7 @@
 // クライアントが型で区別できなかった。エラーを分けた目的そのものが契約に出ていない状態。
 // リテラルにすると生成物が `zod.literal("4011")` になり、判別可能な直和になる。
 //
-// `status` も同じくリテラルで持つ。理由は response/ErrorResponses.tsp を参照。
+// ボディに `status` は持たない。理由は response/ErrorResponses.tsp を参照。
 
 import "./BadRequestError.tsp";
 import "./ConflictError.tsp";

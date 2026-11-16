@@ -104,14 +104,9 @@ components:
     BadRequestError:
       type: object
       required:
-        - status
         - code
         - title
       properties:
-        status:
-          type: number
-          enum:
-            - 400
         code:
           type: string
           enum:
@@ -125,8 +120,7 @@ components:
       description: リクエスト内容が不正（汎用）
       title: BadRequestError
       examples:
-        - status: 400
-          code: '4000'
+        - code: '4000'
           title: リクエスト内容が不正です
           errors:
             - field: email
@@ -169,7 +163,7 @@ components:
       title: ErrorItem
     ErrorTitle:
       type: string
-      description: エラーの表題。何が起きたかを1行で表す
+      description: エラーの表題。何が起きたかを1行で表す、ログ向けの文。code ごとに同じ文になる。分岐や画面表示には使わない
       title: ErrorTitle
       examples:
         - リクエスト内容が不正です
@@ -190,14 +184,9 @@ components:
     InternalServerError:
       type: object
       required:
-        - status
         - code
         - title
       properties:
-        status:
-          type: number
-          enum:
-            - 500
         code:
           type: string
           enum:
@@ -207,8 +196,7 @@ components:
       description: サーバー内部で予期せぬエラーが発生した（汎用）
       title: InternalServerError
       examples:
-        - status: 500
-          code: '5000'
+        - code: '5000'
           title: サーバーで予期せぬエラーが発生しました
     ListProductsPagination:
       type: object
@@ -284,14 +272,9 @@ components:
     ResourceNotFoundError:
       type: object
       required:
-        - status
         - code
         - title
       properties:
-        status:
-          type: number
-          enum:
-            - 404
         code:
           type: string
           enum:
@@ -301,8 +284,7 @@ components:
       description: リソースが存在しない（汎用）
       title: ResourceNotFoundError
       examples:
-        - status: 404
-          code: '4040'
+        - code: '4040'
           title: 指定されたリソースは存在しません
     TotalCount:
       type: integer
