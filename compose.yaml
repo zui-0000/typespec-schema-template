@@ -1,6 +1,6 @@
 services:
   swagger-ui:
-    image: swaggerapi/swagger-ui:v5.34.1
+    image: swaggerapi/swagger-ui:v5.35.0
     ports:
       - "8080:8080"
     volumes:
