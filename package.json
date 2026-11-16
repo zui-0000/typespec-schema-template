@@ -6,7 +6,7 @@
   "scripts": {
     "check:updates": "pnpm outdated --recursive --long",
     "check:lefthook": "pnpm format",
-    "build": "pnpm run format && run-s \"build:*\"",
+    "build": "pnpm run format && pnpm run \"/^build:/\"",
     "build:foo-backend": "tsp compile src/foo-backend",
     "build:hoge-backend": "tsp compile src/hoge-backend",
     "format": "tsp format .",
@@ -20,7 +20,6 @@
     "@typespec/http": "1.18.0",
     "@typespec/openapi": "1.18.0",
     "@typespec/openapi3": "1.18.0",
-    "lefthook": "2.2.2",
-    "npm-run-all2": "9.0.4"
+    "lefthook": "2.2.2"
   }
 }
